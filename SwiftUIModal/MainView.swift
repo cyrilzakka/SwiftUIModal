@@ -10,6 +10,7 @@ import SwiftUI
 
 struct MainView<Content: View> : View {
     
+    @State var dragOffset: CGSize = .zero
     @State var modalPosition: ModalPosition = .partiallyRevealed
     @State var enableFullscreen: Bool = true
     
@@ -21,16 +22,16 @@ struct MainView<Content: View> : View {
             
             // User content
             self.content()
-                .mask(RoundedRectangle(cornerRadius: isDrawerOpen() ? 15:0, style: .continuous))
-                .scaleEffect(x: isDrawerOpen() ?  0.9:1, y: isDrawerOpen() ?  0.9:1, anchor: .center)
+                .mask(RoundedRectangle(cornerRadius: cornerRadiusForOffset(), style: .continuous))
+                .scaleEffect(x: scaleForOffset(), y: scaleForOffset(), anchor: .center)
                 .animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
             
             // Darkening View
             Rectangle()
                 .fill(Color.black)
-                .opacity(isDrawerOpen() ? 0.3:0)
+                .opacity(opacityForOffset())
             
-            ModalView( position: $modalPosition, enableFullscreen: $enableFullscreen) {
+            ModalView(offset: $dragOffset, position: $modalPosition, enableFullscreen: $enableFullscreen) {
                 Color.red
             }
         }
@@ -39,6 +40,30 @@ struct MainView<Content: View> : View {
     
     private func isDrawerOpen() -> Bool {
         return [.fullscreen, .open].contains(modalPosition)
+    }
+    
+    private func scaleForOffset() -> CGFloat {
+        if self.dragOffset.height < 0 {
+            return isDrawerOpen() ? 0.9:max(1 - abs(self.dragOffset.height*0.0002), 0.9)
+        } else {
+            return isDrawerOpen() ? min(0.9 + abs(self.dragOffset.height*0.0002), 1):1
+        }
+    }
+    
+    private func cornerRadiusForOffset() -> CGFloat {
+        if self.dragOffset.height < 0 {
+            return isDrawerOpen() ? 15:max(abs(self.dragOffset.height*0.01), 15)
+        } else {
+            return isDrawerOpen() ? min(15 - abs(self.dragOffset.height*0.01), 0):0
+        }
+    }
+    
+    private func opacityForOffset() -> Double {
+        if self.dragOffset.height < 0 {
+            return isDrawerOpen() ? 0.3:Double(min(abs(self.dragOffset.height*0.001), 0.3))
+        } else {
+            return isDrawerOpen() ? Double(max(0.3 - abs(self.dragOffset.height*0.001), 0)):0
+        }
     }
 }
 

@@ -59,6 +59,7 @@ enum DragState {
 struct ModalView<Content: View> : View {
     
     @GestureState var dragState: DragState = .inactive
+    @Binding var offset: CGSize
     @Binding var position: ModalPosition
     @Binding var enableFullscreen: Bool
     
@@ -71,7 +72,7 @@ struct ModalView<Content: View> : View {
     
     var timer: Timer? {
         return Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
-            if self.position == .open {
+            if self.position == .open && self.dragState.translation.height == 0 {
                 self.position = .fullscreen
             } else {
                 timer.invalidate()
@@ -84,6 +85,7 @@ struct ModalView<Content: View> : View {
             .updating($dragState) { drag, state, transaction in
                 state = .dragging(translation: drag.translation)
         }
+        .onChanged { self.offset = $0.translation }
         .onEnded(onDragEnded)
         
         

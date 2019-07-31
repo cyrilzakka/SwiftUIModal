@@ -12,7 +12,10 @@ struct ContentView: View {
 
     var body: some View {
         MainView {
-            Color.white
+            ZStack(alignment: .top) {
+                Color.white
+            }
+            
         }
     }
 }
