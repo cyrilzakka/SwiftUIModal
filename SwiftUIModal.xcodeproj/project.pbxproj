@@ -292,6 +292,7 @@
 				TargetAttributes = {
 					D765B3BD22F46E1B00695AD8 = {
 						CreatedOnToolsVersion = 11.0;
+						DevelopmentTeam = YUN383XGPH;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -434,6 +435,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "SwiftUIModal-Demo/Preview\\ Content";
+				DEVELOPMENT_TEAM = YUN383XGPH;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -499,6 +501,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_ASSET_PATHS = "SwiftUIModal-Demo/Preview\\ Content";
+				DEVELOPMENT_TEAM = YUN383XGPH;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
