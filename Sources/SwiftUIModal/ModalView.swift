@@ -9,7 +9,7 @@
 import SwiftUI
 
 /// Positions of the`ModalView` relative to the top of the screen.
-enum ModalPosition: CGFloat {
+public enum ModalPosition: CGFloat {
     case fullscreen
     case open = 56
     case partiallyRevealed
@@ -27,11 +27,16 @@ enum ModalPosition: CGFloat {
             return UIScreen.main.bounds.height + 42 // Safe-area offset
         }
     }
+
+    mutating public func toggle(_ defaultOpen: ModalPosition = .open) {
+        let newValue = self == .closed ? defaultOpen : .closed
+        self = newValue
+    }
 }
 
 /// `Enum` responsible keeping track of the `DragGesture` state.
 /// Lifted from the [official Apple Documentation](https://developer.apple.com/documentation/swiftui/gestures/composing_swiftui_gestures).
-enum DragState {
+public enum DragState {
     
     case inactive
     case dragging(translation: CGSize)
@@ -56,12 +61,19 @@ enum DragState {
 }
 
 /// View responsible for presenting content in a modal that slides up from the bottom of the screen.
-struct ModalView<Content: View> : View {
+public struct ModalView<Content: View> : View {
     
-    @GestureState var dragState: DragState = .inactive
-    @Binding var offset: CGSize
-    @Binding var position: ModalPosition
-    @Binding var enableFullscreen: Bool
+    @GestureState public var dragState: DragState = .inactive
+    @Binding public var offset: CGSize
+    @Binding public var position: ModalPosition
+    @Binding public var enableFullscreen: Bool
+
+    public init(offset: Binding<CGSize>, position: Binding<ModalPosition>, enableFullscreen: Binding<Bool>, _ content: @escaping () -> Content) {
+        self._offset = offset
+        self._position = position
+        self._enableFullscreen = enableFullscreen
+        self.content = content
+    }
     
     var content: () -> Content
     
@@ -80,7 +92,7 @@ struct ModalView<Content: View> : View {
         }
     }
     
-    var body: some View {
+    public var body: some View {
         let drag = DragGesture()
             .updating($dragState) { drag, state, transaction in
                 state = .dragging(translation: drag.translation)

@@ -7,17 +7,26 @@
 //
 
 import SwiftUI
+import SwiftUIModal
 
 struct ContentView: View {
 
+    @State var modalState: ModalPosition = .partiallyRevealed
+
     var body: some View {
-        MainView {
-            ZStack(alignment: .top) {
+        ModalPresenterView(modalState: $modalState, {
+            ZStack(alignment: .center) {
                 Color.white
+
+                Button("Toggle Modal") {
+                    self.modalState.toggle()
+                }
             }
-            
+        }) {
+            Color.red
         }
     }
+
 }
 
 #if DEBUG

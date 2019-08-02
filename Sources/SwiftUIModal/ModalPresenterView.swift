@@ -8,15 +8,24 @@
 
 import SwiftUI
 
-struct MainView<Content: View> : View {
+public struct ModalPresenterView<Content: View, ModalContent: View> : View {
     
-    @State var dragOffset: CGSize = .zero
-    @State var modalPosition: ModalPosition = .partiallyRevealed
-    @State var enableFullscreen: Bool = true
+    @State public var dragOffset: CGSize = .zero
+    @Binding public var modalPosition: ModalPosition
+    @State public var enableFullscreen: Bool = true
+
+    public init(modalState: Binding<ModalPosition>,
+                _ content: @escaping () -> Content,
+                _ modalContent: @escaping () -> ModalContent) {
+        self._modalPosition = modalState
+        self.content = content
+        self.modalcontent = modalContent
+    }
     
     var content: () -> Content
+    var modalcontent: () -> ModalContent
     
-    var body: some View {
+    public var body: some View {
         return ZStack(alignment: .bottom) {
             Color.black
             
@@ -32,7 +41,7 @@ struct MainView<Content: View> : View {
                 .opacity(opacityForOffset())
             
             ModalView(offset: $dragOffset, position: $modalPosition, enableFullscreen: $enableFullscreen) {
-                Color.red
+                self.modalcontent()
             }
         }
         .edgesIgnoringSafeArea(.vertical)
