@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftUIModal
 
 struct MainView<Content: View> : View {
     
