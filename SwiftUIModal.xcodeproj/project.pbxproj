@@ -25,12 +25,12 @@
 		D765B3CA22F46E1C00695AD8 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D765B3C922F46E1C00695AD8 /* Preview Assets.xcassets */; };
 		D765B3CD22F46E1C00695AD8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D765B3CB22F46E1C00695AD8 /* LaunchScreen.storyboard */; };
 		D765B3D322F46E5500695AD8 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D765B3D222F46E5500695AD8 /* ContentView.swift */; };
-		D765B3D522F46E6300695AD8 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D765B3D422F46E6300695AD8 /* MainView.swift */; };
 		D765B3DA22F46E8200695AD8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D765B3D822F46E8200695AD8 /* SceneDelegate.swift */; };
 		D765B3DB22F46E8200695AD8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D765B3D922F46E8200695AD8 /* AppDelegate.swift */; };
 		D765B3DD22F46F0900695AD8 /* SwiftUIModal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftUIModal::SwiftUIModal::Product" /* SwiftUIModal.framework */; };
 		D765B3DE22F46F0900695AD8 /* SwiftUIModal.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = "SwiftUIModal::SwiftUIModal::Product" /* SwiftUIModal.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		OBJ_24 /* SwiftUIModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* SwiftUIModal.swift */; };
+		D7FD3B6B22F4749700F47B3A /* ModalPresenterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D765B3D422F46E6300695AD8 /* ModalPresenterView.swift */; };
+		OBJ_24 /* ModalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_9 /* ModalView.swift */; };
 		OBJ_31 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_42 /* SwiftUIModalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* SwiftUIModalTests.swift */; };
 		OBJ_43 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_13 /* XCTestManifests.swift */; };
@@ -81,7 +81,7 @@
 		D765B3C922F46E1C00695AD8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		D765B3CC22F46E1C00695AD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D765B3D222F46E5500695AD8 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		D765B3D422F46E6300695AD8 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		D765B3D422F46E6300695AD8 /* ModalPresenterView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalPresenterView.swift; sourceTree = "<group>"; };
 		D765B3D622F46E7600695AD8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D765B3D822F46E8200695AD8 /* SceneDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		D765B3D922F46E8200695AD8 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 		OBJ_17 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		OBJ_18 /* demo.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = demo.gif; sourceTree = "<group>"; };
 		OBJ_6 /* Package.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		OBJ_9 /* SwiftUIModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIModal.swift; sourceTree = "<group>"; };
+		OBJ_9 /* ModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModalView.swift; sourceTree = "<group>"; };
 		"SwiftUIModal::SwiftUIModal::Product" /* SwiftUIModal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftUIModal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"SwiftUIModal::SwiftUIModalTests::Product" /* SwiftUIModalTests.xctest */ = {isa = PBXFileReference; lastKnownFileType = file; path = SwiftUIModalTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -128,7 +128,6 @@
 				D765B3D922F46E8200695AD8 /* AppDelegate.swift */,
 				D765B3D822F46E8200695AD8 /* SceneDelegate.swift */,
 				D765B3D222F46E5500695AD8 /* ContentView.swift */,
-				D765B3D422F46E6300695AD8 /* MainView.swift */,
 				D765B3C622F46E1C00695AD8 /* Assets.xcassets */,
 				D765B3CB22F46E1C00695AD8 /* LaunchScreen.storyboard */,
 				D765B3D622F46E7600695AD8 /* Info.plist */,
@@ -205,7 +204,8 @@
 		OBJ_8 /* SwiftUIModal */ = {
 			isa = PBXGroup;
 			children = (
-				OBJ_9 /* SwiftUIModal.swift */,
+				D765B3D422F46E6300695AD8 /* ModalPresenterView.swift */,
+				OBJ_9 /* ModalView.swift */,
 			);
 			name = SwiftUIModal;
 			path = Sources/SwiftUIModal;
@@ -337,7 +337,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D765B3DB22F46E8200695AD8 /* AppDelegate.swift in Sources */,
-				D765B3D522F46E6300695AD8 /* MainView.swift in Sources */,
 				D765B3D322F46E5500695AD8 /* ContentView.swift in Sources */,
 				D765B3DA22F46E8200695AD8 /* SceneDelegate.swift in Sources */,
 			);
@@ -347,7 +346,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
-				OBJ_24 /* SwiftUIModal.swift in Sources */,
+				OBJ_24 /* ModalView.swift in Sources */,
+				D7FD3B6B22F4749700F47B3A /* ModalPresenterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

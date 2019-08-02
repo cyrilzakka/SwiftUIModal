@@ -27,6 +27,11 @@ public enum ModalPosition: CGFloat {
             return UIScreen.main.bounds.height + 42 // Safe-area offset
         }
     }
+
+    mutating public func toggle(_ defaultOpen: ModalPosition = .open) {
+        let newValue = self == .closed ? defaultOpen : .closed
+        self = newValue
+    }
 }
 
 /// `Enum` responsible keeping track of the `DragGesture` state.
