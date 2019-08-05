@@ -8,11 +8,12 @@
 
 import SwiftUI
 
-struct MainView<Content: View> : View {
+struct BackgroundView<Content: View> : View {
+    
+    @EnvironmentObject var modalManager: ModalViewManager
     
     @State var dragOffset: CGSize = .zero
-    @State var modalPosition: ModalPosition = .partiallyRevealed
-    @State var enableFullscreen: Bool = true
+    @State var enableFullscreen: Bool = false
     
     var content: () -> Content
     
@@ -21,25 +22,30 @@ struct MainView<Content: View> : View {
             Color.black
             
             // User content
-            self.content()
-                .mask(RoundedRectangle(cornerRadius: cornerRadiusForOffset(), style: .continuous))
-                .scaleEffect(x: scaleForOffset(), y: scaleForOffset(), anchor: .center)
-                .animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
+            ZStack {
+                Color.white
+                self.content()
+                    .offset(x: 0, y: 42) // Safe Area Offset
+            }
+            .mask(RoundedRectangle(cornerRadius: cornerRadiusForOffset(), style: .continuous))
+            .scaleEffect(x: scaleForOffset(), y: scaleForOffset(), anchor: .center)
+            .animation(.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0))
             
             // Darkening View
             Rectangle()
                 .fill(Color.black)
                 .opacity(opacityForOffset())
             
-            ModalView(offset: $dragOffset, position: $modalPosition, enableFullscreen: $enableFullscreen) {
-                Color.red
+            ModalView(offset: $dragOffset, enableFullscreen: $enableFullscreen) {
+                Color.green
             }
+            .environmentObject(modalManager)
         }
         .edgesIgnoringSafeArea(.vertical)
     }
     
     private func isDrawerOpen() -> Bool {
-        return [.fullscreen, .open].contains(modalPosition)
+        return [.fullscreen, .open].contains(modalManager.position)
     }
     
     private func scaleForOffset() -> CGFloat {
@@ -52,9 +58,9 @@ struct MainView<Content: View> : View {
     
     private func cornerRadiusForOffset() -> CGFloat {
         if self.dragOffset.height < 0 {
-            return isDrawerOpen() ? 15:max(abs(self.dragOffset.height*0.01), 15)
+            return isDrawerOpen() ? 15:min(abs(self.dragOffset.height*0.03), 15)
         } else {
-            return isDrawerOpen() ? min(15 - abs(self.dragOffset.height*0.01), 0):0
+            return isDrawerOpen() ? max(15 - abs(self.dragOffset.height*0.03), 0):0
         }
     }
     
@@ -66,4 +72,3 @@ struct MainView<Content: View> : View {
         }
     }
 }
-

@@ -7,6 +7,12 @@
 //
 
 import SwiftUI
+import Combine
+
+/// Environment object responsible for observing/setting the state of the modal view
+class ModalViewManager: ObservableObject {
+    @Published var position: ModalPosition = .partiallyRevealed
+}
 
 /// Positions of the`ModalView` relative to the top of the screen.
 enum ModalPosition: CGFloat {
@@ -58,22 +64,23 @@ enum DragState {
 /// View responsible for presenting content in a modal that slides up from the bottom of the screen.
 struct ModalView<Content: View> : View {
     
+    @EnvironmentObject var modalManager: ModalViewManager
+    
     @GestureState var dragState: DragState = .inactive
     @Binding var offset: CGSize
-    @Binding var position: ModalPosition
     @Binding var enableFullscreen: Bool
     
     var content: () -> Content
     
     var animation: Animation {
         Animation.interpolatingSpring(stiffness: 300.0, damping: 30.0, initialVelocity: 10.0)
-            .delay(self.position == .fullscreen ? 3:0)
+            .delay(self.modalManager.position == .fullscreen ? 3:0)
     }
     
     var timer: Timer? {
         return Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
-            if self.position == .open && self.dragState.translation.height == 0 {
-                self.position = .fullscreen
+            if self.modalManager.position == .open && self.dragState.translation.height == 0 && self.enableFullscreen {
+                self.modalManager.position = .fullscreen
             } else {
                 timer.invalidate()
             }
@@ -83,21 +90,26 @@ struct ModalView<Content: View> : View {
     var body: some View {
         let drag = DragGesture()
             .updating($dragState) { drag, state, transaction in
-                state = .dragging(translation: drag.translation)
+                state = .dragging(translation: (self.modalManager.position != .fullscreen) ? drag.translation:.zero)
         }
-        .onChanged { self.offset = $0.translation }
+        .onChanged { self.offset = (self.modalManager.position != .fullscreen) ? $0.translation: .zero}
         .onEnded(onDragEnded)
         
         
         return self.content()
             .background(Color(red: 241/255, green: 241/255, blue: 241/255))
-            .mask(RoundedRectangle(cornerRadius: (self.position == .fullscreen) ? min(20, abs(self.dragState.translation.height) * 0.1):20, style: .continuous))
-            .offset(y: max(0, self.position.offsetFromTop() + self.dragState.translation.height))
+            .mask(RoundedRectangle(cornerRadius: self.cornerRadiusForOffset(), style: .continuous))
+            .offset(y: max(0, self.modalManager.position.offsetFromTop() + self.dragState.translation.height))
             .animation(self.dragState.isDragging ? nil : animation)
             .gesture(drag)
+            .environmentObject(modalManager)
     }
     
     private func onDragEnded(drag: DragGesture.Value) {
+        
+        if modalManager.position == .fullscreen {
+            return
+        }
         
         // Setting stops
         let higherStop: ModalPosition
@@ -108,7 +120,7 @@ struct ModalView<Content: View> : View {
         
         // Determining the direction of the drag gesture and its distance from the top
         let dragDirection = drag.predictedEndLocation.y - drag.location.y
-        let offsetFromTopOfView = self.position.offsetFromTop() + drag.translation.height
+        let offsetFromTopOfView = self.modalManager.position.offsetFromTop() + drag.translation.height
         
         // Determining whether drawer is above or below `.partiallyRevealed` threshold for snapping behavior.
         if offsetFromTopOfView <= ModalPosition.partiallyRevealed.offsetFromTop() {
@@ -128,16 +140,19 @@ struct ModalView<Content: View> : View {
         
         // Determining the drawer's position.
         if dragDirection > 0 {
-            self.position = lowerStop
+            self.modalManager.position = lowerStop
         } else if dragDirection < 0 {
-            self.position = higherStop
+            self.modalManager.position = higherStop
         } else {
-            self.position = nearestPosition
+            self.modalManager.position = nearestPosition
         }
         
-        
-        if self.position == .open && enableFullscreen {
-            _ = timer
-        }
+        _ = timer
+    }
+    
+    private func cornerRadiusForOffset() -> CGFloat {
+        // return (self.position == .fullscreen) ? min((abs(self.dragState.translation.height) * 0.1), 20):20
+        // Bug where the min value isn't applied fast enough when the modal view is dragged too quickly
+        return 20
     }
 }

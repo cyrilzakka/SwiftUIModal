@@ -9,14 +9,14 @@
 import SwiftUI
 
 struct ContentView: View {
-
+    
+     @EnvironmentObject var modalManager: ModalViewManager
+    
     var body: some View {
-        MainView {
-            ZStack(alignment: .top) {
-                Color.white
-            }
-            
+        BackgroundView {
+            Color.white
         }
+        .environmentObject(modalManager)
     }
 }
 
