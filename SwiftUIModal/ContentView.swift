@@ -10,20 +10,13 @@ import SwiftUI
 
 struct ContentView: View {
     
-     @EnvironmentObject var modalManager: ModalViewManager
+    @EnvironmentObject var modalManager: ModalManager
     
     var body: some View {
-        BackgroundView {
-            Color.white
-        }
-        .environmentObject(modalManager)
+        return ZStack {
+            ForEach($modalManager.modals) { modal in
+                ModalView(currentModal: modal).environmentObject(self.modalManager)
+            }
+        }.onAppear(perform: {self.modalManager.fetchContent()})
     }
 }
-
-#if DEBUG
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
-#endif

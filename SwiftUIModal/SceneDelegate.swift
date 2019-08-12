@@ -23,9 +23,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             window.rootViewController = UIHostingController(
-                rootView: ContentView()
-                    .environmentObject(ModalViewManager())
-            )
+                rootView: ContentView().environmentObject(ModalManager()))
             self.window = window
             window.makeKeyAndVisible()
         }
